@@ -36,13 +36,13 @@ public class Main {
         funzioni.addRecord((Path.of("Azienda.CSV")).toFile(), "Azienda", "Samsung");
 
         //7 paesi
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Italia");
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Francia");
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Germania");
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Spagna");
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Portogallo");
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Inghilterra");
-        funzioni.addRecord((Path.of("Paesi.CSV")).toFile(), "Paesi", "Svizzera");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Italia");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Francia");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Germania");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Spagna");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Portogallo");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Inghilterra");
+        funzioni.addRecord((Path.of("Paese.CSV")).toFile(), "Paese", "Svizzera");
 
     }
 }
