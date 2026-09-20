@@ -1,20 +1,18 @@
 import java.io.*;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Funzioni {
+
     public void addRecord(File csv, Campo campo, String valore) throws IOException{
         try(BufferedReader bReader = new BufferedReader(new FileReader(csv))){
             valore = valore.trim().toLowerCase();
-            int index = indiceCampo(bReader, campo); //consumo la riga campi
-            String riga;
+            String[] riga = bReader.readLine().split(",");
+             int index = indiceCampo(riga, campo);
             boolean isNewRecord = true;
             int id = 0;
-            while ((riga = bReader.readLine()) != null) {
+            while ((riga = bReader.readLine().split(",")) != null) {
                 id++;
-                String[] records = riga.split(",");
-                if(records[index].equals(valore)){
+                if(riga[index].equals(valore)){
                     isNewRecord = false;
                     break;
                 }
@@ -32,12 +30,13 @@ public class Funzioni {
     public int getID(File csv, Campo campo, String valore) throws IOException{ //Cerca se esiste gia' il record, in caso contrario lo crea. Restituisce l'ID
         try(BufferedReader bReader = new BufferedReader(new FileReader(csv))){
             valore = valore.trim().toLowerCase();
-            int index = indiceCampo(bReader, campo); //consumo la riga campi
+            String[] rigaSplit = bReader.readLine().split(",");
             String riga;
+            int index = indiceCampo(rigaSplit, campo);
             int id = 0;
             while ((riga = bReader.readLine()) != null) {
-                String[] records = riga.split(",");
-                if(records[index].equals(valore)){
+                rigaSplit = riga.split(",");
+                if(rigaSplit[index].equals(valore)){
                     bReader.close();
                     return id;
                 }
@@ -51,8 +50,7 @@ public class Funzioni {
         }
     }
     
-    private int indiceCampo(BufferedReader bReader, Campo campo) throws IOException{
-        String[] campi = bReader.readLine().split(",");
+    private int indiceCampo(String[] campi, Campo campo) throws IOException{
         for (int i = 0; i < campi.length; i++) {
             if (campi[i].equals(campo.toString())) {
                 return i;
@@ -61,17 +59,7 @@ public class Funzioni {
         throw new RuntimeException("Campo not found");
     }
 
-    public boolean recordExists(HashMap<String, String> reocrd){
-        for () {
-            
-        }
-    }
-
     public void addStudente(String nome, String cognome, String pcto, String vacanza) throws IOException{
-        if(//studente esiste){
-            return;
-        }
-        //dare ID a studente 
         File fileStudendte = (Path.of("Studente.CSV")).toFile();
         String newStudente = "";
 
@@ -86,6 +74,29 @@ public class Funzioni {
 
         File filePaese = (Path.of("Paese.CSV")).toFile();
         newStudente += getID(filePaese, Campo.PAESE, vacanza);
+
+        try(FileWriter fWriter = new FileWriter(fileStudendte, true)){
+            int studentID = -1;
+            try(BufferedReader bReader = new BufferedReader(new FileReader(fileStudendte))){
+                String riga;
+                while ((riga = bReader.readLine()) != null) {
+                    String[] rigaSplit = riga.split(",");
+                    for(int i = 0; i<rigaSplit.length; i++){
+                        if(/**FUNZIONE PER VERIFICARE VERIFICARE CAMPO PER CAMPO SE SONO UGUALI, RICHIAMARE CSV DA ID PER OGNI CAMPO && **/i !=0){
+                            System.out.println((rigaSplit[i] + " " + newStudente.split(",")[i]));
+                            break;
+                        }
+                        if(i == rigaSplit.length-1){
+                            return ; //lo studente con queste caratteristiche esiste gia'
+                        }
+                    }
+                    studentID++;
+                }
+                bReader.close();
+            }
+            fWriter.write("\n" + studentID + "," + newStudente);
+            fWriter.close();
+        }
     }
 
     private enum Campo {
