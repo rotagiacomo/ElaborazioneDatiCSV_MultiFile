@@ -1,10 +1,11 @@
 import java.io.*;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Funzioni {
-    public void addRecord(File csv, String campo, String valore) throws IOException{
+    public void addRecord(File csv, Campo campo, String valore) throws IOException{
         try(BufferedReader bReader = new BufferedReader(new FileReader(csv))){
-            campo = campo.trim().toUpperCase();
             valore = valore.trim().toLowerCase();
             int index = indiceCampo(bReader, campo); //consumo la riga campi
             String riga;
@@ -28,42 +29,69 @@ public class Funzioni {
         }
     }
 
-    public boolean recordExists(File csv, String campo, String valore) throws IOException{
+    public int getID(File csv, Campo campo, String valore) throws IOException{ //Cerca se esiste gia' il record, in caso contrario lo crea. Restituisce l'ID
         try(BufferedReader bReader = new BufferedReader(new FileReader(csv))){
-            campo = campo.trim().toUpperCase();
             valore = valore.trim().toLowerCase();
             int index = indiceCampo(bReader, campo); //consumo la riga campi
             String riga;
+            int id = 0;
             while ((riga = bReader.readLine()) != null) {
                 String[] records = riga.split(",");
                 if(records[index].equals(valore)){
-                    return true;
+                    bReader.close();
+                    return id;
                 }
+                id++;
             }
-            return false;
+            try(FileWriter fWriter = new FileWriter(csv, true)){
+                fWriter.write("\n" + id + "," + valore);
+                fWriter.close();
+                return id;
+            }
         }
-        //modificare affinche si controllino più campi e più valori
     }
     
-    private int indiceCampo(BufferedReader bReader, String campo) throws IOException{
+    private int indiceCampo(BufferedReader bReader, Campo campo) throws IOException{
         String[] campi = bReader.readLine().split(",");
         for (int i = 0; i < campi.length; i++) {
-            if (campi[i].equals(campo)) {
+            if (campi[i].equals(campo.toString())) {
                 return i;
             }
         }
         throw new RuntimeException("Campo not found");
     }
 
-    public void addStudente(String nome, String cognome, String PCTO, String Vacanze) throws IOException{
-        File file = (Path.of("Nome.CSV")).toFile();
-
+    public boolean recordExists(HashMap<String, String> reocrd){
+        for () {
+            
+        }
     }
 
-    private int getID(File csv, String campo, String valore){
-        if(recordExists(csv, campo, valore)){
-            //trovare indice record e ritornare il relativo ID
+    public void addStudente(String nome, String cognome, String pcto, String vacanza) throws IOException{
+        if(//studente esiste){
+            return;
         }
-        //creare un nuovo record e ritornare il relativo ID
+        //dare ID a studente 
+        File fileStudendte = (Path.of("Studente.CSV")).toFile();
+        String newStudente = "";
+
+        File fileNome = (Path.of("Nome.CSV")).toFile();
+        newStudente += getID(fileNome, Campo.NOME, nome) + ",";
+
+        File fileCognome = (Path.of("Cognome.CSV")).toFile();
+        newStudente += getID(fileCognome, Campo.COGNOME, cognome) + ",";
+
+        File fileAzienda = (Path.of("Azienda.CSV")).toFile();
+        newStudente += getID(fileAzienda, Campo.AZIENDA, pcto) + ",";
+
+        File filePaese = (Path.of("Paese.CSV")).toFile();
+        newStudente += getID(filePaese, Campo.PAESE, vacanza);
+    }
+
+    private enum Campo {
+        NOME,
+        COGNOME,
+        AZIENDA,
+        PAESE
     }
 }
