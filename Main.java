@@ -2,8 +2,8 @@ import java.io.IOException;
 
 public class Main {
     public static void main() throws IOException{
-        Funzioni funzioni = new Funzioni();
-        funzioni.addStudente("Andrea", "Marino", "TecnoBody", "Svizzera");
-        funzioni.addStudente("Luca", "Marchi", "Apple", "Marocco");
+        GestoreDatabase gestoreDatabase = new GestoreDatabase();
+        String studente = gestoreDatabase.getStudente(1);
+        System.out.println(studente);
     }
 }
